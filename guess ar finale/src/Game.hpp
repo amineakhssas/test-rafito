@@ -2,15 +2,17 @@
 #define GAME_HPP
 
 #include <string>
+#include <vector>
 
 class Game {
 public:
     Game();
-    void start(int target);
-    std::string guess(int value);
+    void newGame(int target);
+    std::string play(int guess);
     int getMaxAttempts() const;
     int getAttemptsLeft() const;
     std::string getHistory() const;
+
 private:
     int maxAttempts;
     int attemptsLeft;
