@@ -1,33 +1,32 @@
 #include "Game.hpp"
-#include <algorithm> // for std::to_string
+#include <sstream>
 
-Game::Game() : maxAttempts(5), attemptsLeft(5), target(0) {}
+Game::Game() : maxAttempts(5), attemptsLeft(5), targetNumber(0) {}
 
-void Game::newGame(int target) {
-    this->target = target;
+int Game::getMaxAttempts() const {
+    return maxAttempts;
+}
+
+void Game::start(int target) {
+    targetNumber = target;
     attemptsLeft = maxAttempts;
     history.clear();
 }
 
-std::string Game::play(int guess) {
+std::string Game::guess(int number) {
     if (attemptsLeft <= 0) {
         return "game over";
     }
-
     attemptsLeft--;
-    history.push_back(guess);
+    history.push_back(number);
 
-    if (guess < target) {
+    if (number < targetNumber) {
         return "too low";
-    } else if (guess > target) {
+    } else if (number > targetNumber) {
         return "too high";
     } else {
-        return "Win";
+        return "correct";
     }
-}
-
-int Game::getMaxAttempts() const {
-    return maxAttempts;
 }
 
 int Game::getAttemptsLeft() const {
@@ -35,12 +34,10 @@ int Game::getAttemptsLeft() const {
 }
 
 std::string Game::getHistory() const {
-    std::string result;
-    for (int h : history) {
-        result += std::to_string(h) + " ";
+    std::ostringstream oss;
+    for (size_t i = 0; i < history.size(); ++i) {
+        if (i > 0) oss << " ";
+        oss << history[i];
     }
-    if (!result.empty()) {
-        result.pop_back(); // Remove the trailing space
-    }
-    return result;
+    return oss.str();
 }
