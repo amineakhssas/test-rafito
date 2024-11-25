@@ -6,16 +6,16 @@
 
 class Game {
 public:
-    Game(int maxAttempts = 5);
-
+    Game();
     void start(int target);
     std::string guess(int number);
     int getAttemptsLeft() const;
     std::string getHistory() const;
+    int getMaxAttempts() const; // Méthode publique pour accéder à maxAttempts
 
 private:
     int maxAttempts;
-    int attemptsLeft;
+    int attempts;
     int targetNumber;
     std::vector<int> history;
 };
