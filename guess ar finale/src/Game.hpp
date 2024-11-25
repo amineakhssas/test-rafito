@@ -5,13 +5,17 @@
 
 class Game {
 public:
-    void newGame();
-    void newGame(int nbr);
-    std::string play(int tentatif);
-
+    Game();
+    void start(int target);
+    std::string guess(int value);
+    int getMaxAttempts() const;
+    int getAttemptsLeft() const;
+    std::string getHistory() const;
 private:
+    int maxAttempts;
+    int attemptsLeft;
     int target;
-    int nbRemainingTries;
+    std::vector<int> history;
 };
 
 #endif
