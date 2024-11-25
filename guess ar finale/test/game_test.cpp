@@ -1,46 +1,46 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_all.hpp>
-#include "../src/Game.hpp"
+#include "Game.hpp"
 
 TEST_CASE("Game Initialization") {
     Game game;
-    REQUIRE(game.getMaxAttempts() == 5);
+    REQUIRE(game.getAttemptsLeft() == 5);
 }
 
 TEST_CASE("Game Guessing - Too Low") {
     Game game;
-    game.start(50); // Initialiser le jeu avec la cible 50
+    game.start(50);
     REQUIRE(game.guess(10) == "too low");
     REQUIRE(game.getAttemptsLeft() == 4);
 }
 
 TEST_CASE("Game Guessing - Too High") {
     Game game;
-    game.start(50); // Initialiser le jeu avec la cible 50
+    game.start(50);
     REQUIRE(game.guess(80) == "too high");
     REQUIRE(game.getAttemptsLeft() == 4);
 }
 
 TEST_CASE("Game Guessing - Correct") {
     Game game;
-    game.start(50); // Initialiser le jeu avec la cible 50
+    game.start(50);
     REQUIRE(game.guess(50) == "correct");
-    REQUIRE(game.getAttemptsLeft() == 5); // Le nombre d'essais ne change pas après une bonne réponse
+    REQUIRE(game.getAttemptsLeft() == 5); // Correct guess doesn't reduce attempts
 }
 
 TEST_CASE("Game Over") {
     Game game;
-    game.start(50); // Initialiser le jeu avec la cible 50
-    game.guess(10); // 1er essai
-    game.guess(20); // 2e essai
-    game.guess(30); // 3e essai
-    game.guess(40); // 4e essai
-    REQUIRE(game.guess(60) == "game over"); // 5e essai - jeu terminé
+    game.start(50);
+    game.guess(10);
+    game.guess(20);
+    game.guess(30);
+    game.guess(40);
+    REQUIRE(game.guess(60) == "game over");
 }
 
 TEST_CASE("Game History") {
     Game game;
-    game.start(50); // Initialiser le jeu avec la cible 50
+    game.start(50);
     game.guess(10);
     game.guess(20);
     game.guess(50);
