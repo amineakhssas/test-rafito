@@ -1,25 +1,46 @@
 #include "Game.hpp"
+#include <algorithm> // for std::to_string
 
-void Game::newGame() {
-    target = 10;
-    nbRemainingTries = 5;
+Game::Game() : maxAttempts(5), attemptsLeft(5), target(0) {}
+
+void Game::newGame(int target) {
+    this->target = target;
+    attemptsLeft = maxAttempts;
+    history.clear();
 }
 
-void Game::newGame(int nbr) {
-    target = nbr;
-    nbRemainingTries = 5;
-}
-
-std::string Game::play(int tentatif) {
-    if (tentatif < 0 || tentatif > 100) {
-        return "Invalid";
+std::string Game::play(int guess) {
+    if (attemptsLeft <= 0) {
+        return "game over";
     }
-    nbRemainingTries--;
-    if (tentatif == target) {
-        return "Win";
-    } else if (tentatif < target) {
+
+    attemptsLeft--;
+    history.push_back(guess);
+
+    if (guess < target) {
         return "too low";
-    } else {
+    } else if (guess > target) {
         return "too high";
+    } else {
+        return "Win";
     }
+}
+
+int Game::getMaxAttempts() const {
+    return maxAttempts;
+}
+
+int Game::getAttemptsLeft() const {
+    return attemptsLeft;
+}
+
+std::string Game::getHistory() const {
+    std::string result;
+    for (int h : history) {
+        result += std::to_string(h) + " ";
+    }
+    if (!result.empty()) {
+        result.pop_back(); // Remove the trailing space
+    }
+    return result;
 }
