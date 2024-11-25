@@ -1,23 +1,44 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#include "Game.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <sstream>
 
-#include <string>
-#include <vector>
+Game::Game() : maxAttempts(5), attempts(0), targetNumber(0) {}
 
-class Game {
-private:
-    int targetNumber;
-    int maxAttempts;
-    int attemptsLeft;
-    std::vector<int> history;
+void Game::start(int target) {
+    targetNumber = target;
+    attempts = 0;
+    history.clear();
+}
 
-public:
-    Game();                      // Constructeur par défaut
-    int getMaxAttempts() const;  // Retourne le nombre maximum d'essais
-    void start(int target);      // Initialise le jeu avec un nombre cible
-    std::string guess(int number);  // Devine un nombre et retourne le résultat
-    int getAttemptsLeft() const;   // Retourne le nombre d'essais restants
-    std::string getHistory() const; // Retourne l'historique des devinettes
-};
+std::string Game::guess(int number) {
+    if (attempts >= maxAttempts) {
+        return "game over";
+    }
 
-#endif
+    attempts++;
+    history.push_back(number);
+
+    if (number < targetNumber) {
+        return "too low";
+    } else if (number > targetNumber) {
+        return "too high";
+    } else {
+        return "correct";
+    }
+}
+
+int Game::getAttemptsLeft() const {
+    return maxAttempts - attempts;
+}
+
+std::string Game::getHistory() const {
+    std::ostringstream oss;
+    for (size_t i = 0; i < history.size(); ++i) {
+        if (i > 0) {
+            oss << " ";
+        }
+        oss << history[i];
+    }
+    return oss.str();
+}
