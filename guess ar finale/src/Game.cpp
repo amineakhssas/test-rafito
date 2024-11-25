@@ -1,11 +1,13 @@
 #include "Game.hpp"
-#include <cstdlib>
-#include <ctime>
+#include <stdexcept>
 #include <sstream>
 
 Game::Game() : maxAttempts(5), attempts(0), targetNumber(0) {}
 
 void Game::start(int target) {
+    if (target < 1 || target > 100) {
+        throw std::out_of_range("Target number must be between 1 and 100.");
+    }
     targetNumber = target;
     attempts = 0;
     history.clear();
@@ -16,15 +18,15 @@ std::string Game::guess(int number) {
         return "game over";
     }
 
-    attempts++;
     history.push_back(number);
+    attempts++;
 
-    if (number < targetNumber) {
-        return "too low";
-    } else if (number > targetNumber) {
-        return "too high";
-    } else {
+    if (number == targetNumber) {
         return "correct";
+    } else if (number < targetNumber) {
+        return "too low";
+    } else {
+        return "too high";
     }
 }
 
@@ -41,4 +43,8 @@ std::string Game::getHistory() const {
         oss << history[i];
     }
     return oss.str();
+}
+
+int Game::getMaxAttempts() const {
+    return maxAttempts; // Retourne le nombre maximal d'essais
 }
