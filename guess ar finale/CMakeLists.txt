@@ -23,7 +23,7 @@ add_executable(guess-test
 )
 
 # Lier Catch2 avec les tests
-target_link_libraries(guess-test PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(guess-test PRIVATE Catch2::Catch2)
 
 # Activer les tests
 enable_testing()
