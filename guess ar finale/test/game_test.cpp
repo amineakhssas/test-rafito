@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_all.hpp>
-#include "Game.hpp"
+#include "../src/Game.hpp"
 
 TEST_CASE("Game Initialization") {
     Game game;
