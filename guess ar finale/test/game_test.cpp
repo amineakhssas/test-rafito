@@ -1,43 +1,54 @@
+#define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include "../src/Game.hpp"
-#include <vector>
 
-TEST_CASE("Initialisation de newGame") {
+TEST_CASE("Game Initialization", "[Game]") {
     Game game;
-    game.newGame();
-    REQUIRE(game.play(50) == "too high");
+    REQUIRE(game.getMaxAttempts() == 5);
 }
 
-TEST_CASE("Initialisation avec cible prédéfinie") {
+TEST_CASE("Game Guess Logic - Too Low", "[Game]") {
     Game game;
-    game.newGame(42);
-    REQUIRE(game.play(42) == "Win");
-    REQUIRE(game.play(20) == "too low");
-    REQUIRE(game.play(60) == "too high");
+    game.start(50); // Initialiser le jeu avec la cible 50
+
+    REQUIRE(game.guess(10) == "too low");
+    REQUIRE(game.getAttemptsLeft() == 4);
 }
 
-TEST_CASE("Gestion des entrées invalides") {
+TEST_CASE("Game Guess Logic - Too High", "[Game]") {
     Game game;
-    game.newGame(42);
-    REQUIRE(game.play(200) == "Invalid");
-    REQUIRE(game.play(-10) == "Invalid");
+    game.start(50); // Initialiser le jeu avec la cible 50
+
+    REQUIRE(game.guess(80) == "too high");
+    REQUIRE(game.getAttemptsLeft() == 4);
 }
 
-TEST_CASE("Historique des tentatives") {
+TEST_CASE("Game Guess Logic - Correct Guess", "[Game]") {
     Game game;
-    game.newGame(42);
+    game.start(50); // Initialiser le jeu avec la cible 50
 
-    std::vector<int> history;
-    history.push_back(10);
-    REQUIRE(game.play(10) == "too low");
+    REQUIRE(game.guess(50) == "correct");
+    REQUIRE(game.getAttemptsLeft() == 5); // Le nombre d'essais ne change pas après une bonne réponse
+}
 
-    history.push_back(50);
-    REQUIRE(game.play(50) == "too high");
+TEST_CASE("Game Over Condition", "[Game]") {
+    Game game;
+    game.start(50); // Initialiser le jeu avec la cible 50
 
-    history.push_back(42);
-    REQUIRE(game.play(42) == "Win");
+    game.guess(10); // 1er essai
+    game.guess(20); // 2e essai
+    game.guess(30); // 3e essai
+    game.guess(40); // 4e essai
+    REQUIRE(game.guess(60) == "game over"); // 5e essai - jeu terminé
+}
 
-    REQUIRE(history[0] == 10);
-    REQUIRE(history[1] == 50);
-    REQUIRE(history[2] == 42);
+TEST_CASE("Game History", "[Game]") {
+    Game game;
+    game.start(50); // Initialiser le jeu avec la cible 50
+
+    game.guess(10);
+    game.guess(20);
+    game.guess(50);
+
+    REQUIRE(game.getHistory() == "10 20 50");
 }
