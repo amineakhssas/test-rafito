@@ -12,8 +12,8 @@ int main() {
     Game g;
     srand(time(0));
 
-    vector<int> history; // Historique des tentatives
-    int aleatoire = rand() % 100 + 1; // Génération d'un nombre aléatoire
+    vector<int> history;
+    int aleatoire = rand() % 100 + 1;
     g.newGame(aleatoire);
 
     cout << "Devinez un nombre entre 1 et 100 : \n";
@@ -23,15 +23,15 @@ int main() {
         int a;
         cin >> a;
 
-        if (cin.fail()) { // Gestion des entrées invalides
+        if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Entrée invalide. Réessayez.\n";
-            i--; // Ne pas compter l'entrée invalide
+            i--;
             continue;
         }
 
-        history.push_back(a); // Ajout de la tentative dans l'historique
+        history.push_back(a);
 
         string result = g.play(a);
         cout << "Historique : ";
