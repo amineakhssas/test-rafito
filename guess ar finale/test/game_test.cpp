@@ -1,5 +1,5 @@
-#include "../src/Game.hpp"
 #include <catch2/catch.hpp>
+#include "../src/Game.hpp"
 #include <vector>
 
 TEST_CASE("Initialisation de newGame") {
@@ -27,7 +27,7 @@ TEST_CASE("Historique des tentatives") {
     Game game;
     game.newGame(42);
 
-    vector<int> history;
+    std::vector<int> history;
     history.push_back(10);
     REQUIRE(game.play(10) == "too low");
 
