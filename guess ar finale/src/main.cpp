@@ -1,8 +1,11 @@
 #include <iostream>
 #include <vector>
-#include "Game.hpp"
 #include <ctime>
 #include <cstdlib>
+#include <limits>
+#include <algorithm>
+#include "Game.hpp"
+
 using namespace std;
 
 int main() {
@@ -19,16 +22,16 @@ int main() {
         cout << "Tentative #" << (i + 1) << ": ";
         int a;
         cin >> a;
-        history.push_back(a);
 
         if (cin.fail()) { // Gestion des entrées invalides
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Entrée invalide. Réessayez.\n";
-            history.pop_back();
-            i--;
+            i--; // Ne pas compter l'entrée invalide
             continue;
         }
+
+        history.push_back(a); // Ajout de la tentative dans l'historique
 
         string result = g.play(a);
         cout << "Historique : ";
