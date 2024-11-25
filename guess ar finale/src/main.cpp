@@ -1,51 +1,36 @@
-#include <iostream>
-#include <vector>
-#include <ctime>
-#include <cstdlib>
-#include <limits>
-#include <algorithm>
 #include "Game.hpp"
-
-using namespace std;
+#include <iostream>
+#include <random>
 
 int main() {
-    Game g;
-    srand(time(0));
+    Game game;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 100);
 
-    vector<int> history;
-    int aleatoire = rand() % 100 + 1;
-    g.newGame(aleatoire);
+    int target = dis(gen);
+    game.start(target);
 
-    cout << "Devinez un nombre entre 1 et 100 : \n";
+    std::cout << "Welcome to the Guessing Game!" << std::endl;
+    std::cout << "Guess the number between 1 and 100. You have " << game.getMaxAttempts() << " attempts." << std::endl;
 
-    for (int i = 0; i < 5; i++) {
-        cout << "Tentative #" << (i + 1) << ": ";
-        int a;
-        cin >> a;
+    while (game.getAttemptsLeft() > 0) {
+        int guess;
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
 
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Entrée invalide. Réessayez.\n";
-            i--;
-            continue;
+        std::string result = game.guess(guess);
+        std::cout << result << std::endl;
+
+        if (result == "correct") {
+            std::cout << "You won!" << std::endl;
+            break;
         }
 
-        history.push_back(a);
-
-        string result = g.play(a);
-        cout << "Historique : ";
-        for (int h : history) {
-            cout << h << " ";
-        }
-        cout << "\n" << result << endl;
-
-        if (result == "Win") {
-            cout << "Félicitations ! Vous avez gagné.\n";
-            return 0;
+        if (game.getAttemptsLeft() == 0) {
+            std::cout << "You lost. The correct number was: " << target << std::endl;
         }
     }
 
-    cout << "Dommage ! Vous avez perdu. Le nombre à deviner était : " << aleatoire << endl;
     return 0;
 }
