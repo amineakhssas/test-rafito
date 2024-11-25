@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(guess)
 
-# Inclure FetchContent pour télécharger Catch2 automatiquement
+# Inclure FetchContent pour télécharger Catch2
 include(FetchContent)
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v2.13.10 # Utilisez la version que vous préférez
+  GIT_TAG v2.13.10 # Vérifiez si c'est bien la version que vous utilisez
 )
 FetchContent_MakeAvailable(Catch2)
 
@@ -22,8 +22,8 @@ add_executable(guess-test
     src/Game.cpp
 )
 
-# Lier Catch2 avec les tests
-target_link_libraries(guess-test PRIVATE Catch2::Catch2)
+# Lier Catch2 à la cible des tests
+target_link_libraries(guess-test PRIVATE Catch2::Catch2WithMain)
 
 # Activer les tests
 enable_testing()
